@@ -1,0 +1,71 @@
+/* Breakpoints mobile-first */
+
+/* Celulares pequenos (até 375px) */
+@media (max-width: 375px) {
+  :root {
+    --tile: 50px;
+    --gap: 6px;
+  }
+
+  .tile {
+    font-size: 20px;
+  }
+
+  .key {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  input.guess {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .logo {
+    font-size: 18px;
+  }
+}
+
+/* Tablets e desktop (acima de 430px) */
+@media (min-width: 431px) {
+  .screen {
+    max-width: 430px;
+  }
+
+  .card {
+    max-width: 340px;
+  }
+}
+
+/* Orientação paisagem em celular */
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    padding: 8px;
+    align-items: center;
+  }
+
+  .screen {
+    padding: 2px 0 12px;
+    gap: 8px;
+  }
+
+  .card {
+    padding: 14px;
+  }
+
+  .grid {
+    margin: 6px 0 8px;
+  }
+
+  .keyboard {
+    margin-top: 4px;
+  }
+
+  .footer-note {
+    margin-top: 4px;
+  }
+}

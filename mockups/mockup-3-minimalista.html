@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup 3 — Minimalista &amp; Foco no Ritual</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #fbfbfd;
+    --surface: #ffffff;
+    --primary: #0ea5e9;
+    --primary-dark: #0284c7;
+    --accent: #10b981;
+    --green: #059669;
+    --green-light: #ecfdf5;
+    --yellow: #d97706;
+    --yellow-light: #fbfcf8;
+    --gray: #71717a;
+    --border: #e4e4e7;
+    --text: #18181b;
+    --text-muted: #52525b;
+    --radius: 14px;
+    --tile: 56px;
+    --gap: 8px;
+    --font: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  body {
+    font-family: var(--font);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 12px;
+  }
+  header {
+    width: 100%;
+    max-width: 430px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0 8px;
+  }
+  .logo {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .screen {
+    width: 100%;
+    max-width: 430px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0 24px;
+  }
+  .screen.active { display: flex; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    width: 100%;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+  h1 { font-size: 18px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.3px; }
+  p.sub { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+  .category-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #fafafa;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .category-pill::before { content: "▹"; font-size: 13px; color: var(--primary); }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(6, var(--tile));
+    gap: var(--gap);
+    margin: 8px 0 12px;
+  }
+  .row { display: contents; }
+  .tile {
+    width: var(--tile);
+    height: var(--tile);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--text);
+    background: #fff;
+    transition: all 0.18s ease;
+    position: relative;
+  }
+  .tile.empty { background: #fafafa; border-style: dashed; }
+  .tile.revealed { border-style: solid; }
+  .tile.correct { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tile.present { background: var(--yellow); color: #fff; border-color: var(--yellow); }
+  .tile.absent { background: var(--gray); color: #fff; border-color: var(--gray); }
+  .icon-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 800;
+    border: 1px solid rgba(255,255,255,0.7);
+  }
+  .tile.correct .icon-badge { content: "✓"; }
+  .tile.present .icon-badge { content: "~"; }
+  .tile.absent .icon-badge { content: "×"; }
+  .input-wrap {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  input.guess {
+    flex: 1;
+    height: 48px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    outline: none;
+    padding: 0 12px;
+  }
+  input.guess:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14,165,233,0.15); }
+  button {
+    border: none;
+    border-radius: 10px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s, opacity 0.2s;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 14px;
+    width: 100%;
+  }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost {
+    background: #fafafa;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+  }
+  .keyboard {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 5px;
+    margin-top: 6px;
+  }
+  .key {
+    height: 44px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid var(--border);
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+  }
+  .key.wide { grid-column: span 2; }
+  .key.correct { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .key.present { background: var(--yellow); color: #fff; border-color: var(--yellow); }
+  .key.absent { background: var(--gray); color: #fff; border-color: var(--gray); }
+  .result { text-align: center; padding: 20px 14px; }
+  .result h2 { font-size: 20px; margin-bottom: 4px; }
+  .result p { color: var(--text-muted); margin-bottom: 12px; font-size: 13px; }
+  .word-reveal { margin-top: 10px; font-weight: 700; letter-spacing: 1px; color: var(--primary-dark); font-size: 14px; }
+  .stats { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+  .stat { background: #fafafa; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); min-width: 68px; }
+  .stat .val { font-size: 16px; font-weight: 700; color: var(--primary); }
+  .stat .lbl { font-size: 10px; color: var(--text-muted); }
+  .share-row { display: flex; gap: 6px; margin-top: 12px; }
+  .share-row button { flex: 1; padding: 9px; font-size: 13px; }
+  .btn-copy { background: var(--primary); color: #fff; }
+  .footer-note { margin-top: 8px; font-size: 11px; color: var(--text-muted); text-align: center; }
+  .rules { font-size: 12px; color: var(--text-muted); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); }
+  .rules b { color: var(--text); }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); display: none; align-items: center; justify-content: center; z-index: 50; backdrop-filter: blur(2px); }
+  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 22px; width: 90%; max-width: 340px; text-align: center; }
+  .modal h3 { margin-bottom: 6px; font-size: 17px; }
+  .modal p { color: var(--text-muted); margin-bottom: 16px; font-size: 13px; }
+  .modal .actions { display: flex; gap: 8px; justify-content: center; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--text); color: #fff; padding: 9px 16px; border-radius: 100px; font-size: 12px; display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">⧖ Palavra</div>
+  <div class="badge">hoje: <span id="catBadge">—</span></div>
+</header>
+
+<!-- TELA INICIAL -->
+<div class="screen active" id="screen-home">
+  <div class="card" style="max-width:340px;">
+    <div class="category-pill" id="homeCat">tema: <span id="homeCatName">—</span></div>
+    <h1>Palavra do Dia</h1>
+    <p class="sub">Adivinhe a palavra de 6 letras em até 6 tentativas.</p>
+    <div class="rules">
+      <b>Verde:</b> letra certa, posição certa · <b>Amarelo:</b> letra certa, outro lugar · <b>Cinza:</b> não existe.
+    </div>
+    <button class="btn-primary" onclick="startGame()">Iniciar</button>
+  </div>
+  <div class="footer-note">Sem cadastro · Grátis · Mobile-first</div>
+</div>
+
+<!-- TELA DE PARTIDA -->
+<div class="screen" id="screen-game">
+  <div class="card">
+    <div class="category-pill" id="gameCat">tema: <span id="gameCatName">—</span></div>
+    <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">tentativa <span id="turnNum">1</span> de 6</div>
+    <div class="grid" id="board"></div>
+    <div class="input-wrap">
+      <input type="text" id="guessInput" maxlength="6" class="guess" placeholder="______" autocomplete="off" autocapitalize="characters">
+      <button class="btn-primary" id="btnSubmit" onclick="submitGuess()">Enviar</button>
+    </div>
+    <div id="alert" style="color:var(--primary-dark);font-size:12px;font-weight:600;min-height:16px;display:none;"></div>
+    <div class="keyboard" id="keyboard"></div>
+    <button class="btn-ghost" style="margin-top:8px;width:100%;" onclick="backHome()">Voltar ao início</button>
+  </div>
+</div>
+
+<!-- TELA DE RESULTADO -->
+<div class="screen" id="screen-result">
+  <div class="card" style="max-width:340px;">
+    <div class="result">
+      <h2 id="resultTitle">Parabéns!</h2>
+      <p id="resultMsg">Você acertou em 3 tentativas!</p>
+      <div class="word-reveal" id="wordReveal">PALAVRA: BANANA</div>
+      <div class="stats">
+        <div class="stat"><div class="val" id="statStreak">0</div><div class="lbl">streak</div></div>
+        <div class="stat"><div class="val" id="statBest">0</div><div class="lbl">melhor streak</div></div>
+        <div class="stat"><div class="val" id="statWin">0</div><div class="lbl">vitórias</div></div>
+        <div class="stat"><div class="val" id="statTotal">0</div><div class="lbl">partidas</div></div>
+      </div>
+      <div class="share-row">
+        <button class="btn-copy" onclick="copyResult()">copiar resultado</button>
+      </div>
+      <button class="btn-primary" style="margin-top:10px;" onclick="backHome()">jogar amanhã</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">copiado</div>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>Volte amanhã</h3>
+    <p>Você já jogou hoje. Uma nova palavra espera por você.</p>
+    <div class="actions">
+      <button class="btn-ghost" onclick="closeModal()">estatísticas</button>
+      <button class="btn-primary" onclick="closeModal()">início</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CATEGORIAS = [
+  { nome: 'Animais', palavras: ['GIRAFA','ELEFANTE','COELHO','TARTARUGA','LEOPARDO','JABUTI'] },
+  { nome: 'Comida', palavras: ['PIZZA','CHURRO','HAMBURG','LASANHA','SOBREMESA','ACAI'] },
+  { nome: 'Ciência', palavras: ['PLANETA','ESTRELA','MOLÉCULA','VACINA','FÓSSIL','GALÁXIA'] },
+  { nome: 'Esportes', palavras: ['FÚTBOL','VÔLEI','ATLETISMO','NADADOR','SURFE','CICLISMO'] }
+];
+function pickWord(){ const cat=CATEGORIAS[Math.floor(Math.random()*CATEGORIAS.length)]; const w=cat.palavras[Math.floor(Math.random()*cat.palavras.length)].toUpperCase(); return {categoria:cat.nome,palavra:w}; }
+let state=JSON.parse(localStorage.getItem('palavraJogo'))||null; const today=new Date().toDateString();
+if(!state||state.date!==today){ state={date:today,...pickWord(),turn:0,guesses:[],finished:false,won:false}; localStorage.setItem('palavraJogo',JSON.stringify(state)); }
+let stats=JSON.parse(localStorage.getItem('palavraStats'))||{streak:0,bestStreak:0,wins:0,total:0,lastWord:null};
+const $=id=>document.getElementById(id); const board=$('board'),keyboard=$('keyboard'),guessInput=$('guessInput'),btnSubmit=$('btnSubmit'),alertEl=$('alert');
+function renderHome(){$('catBadge').textContent=state.categoria;$('homeCatName').textContent=state.categoria;$('homeCat').style.display=state.finished?'none':'flex';$('screen-home').classList.toggle('active',!state.finished);if(state.finished)showModal();}
+function renderGame(){$('screen-home').classList.remove('active');$('screen-game').classList.add('active');$('screen-result').classList.remove('active');$('gameCatName').textContent=state.categoria;$('turnNum').textContent=state.turn+1;renderBoard();renderKeyboard();guessInput.disabled=state.finished;btnSubmit.disabled=state.finished||guessInput.value.length!==6;guessInput.focus();}
+function renderResult(){$('screen-game').classList.remove('active');$('screen-result').classList.add('active');$('resultTitle').textContent=state.won?'Parabéns!':'Não foi dessa vez';$('resultMsg').textContent=state.won?`Você acertou em ${state.turn} tentativa${state.turn>1?'s':''}!`: `A palavra era ${state.palavra}.`;$('wordReveal').textContent=`PALAVRA: ${state.palavra}`;$('statStreak').textContent=stats.streak;$('statBest').textContent=stats.bestStreak;$('statWin').textContent=stats.wins;$('statTotal').textContent=stats.total;}
+function renderBoard(){board.innerHTML='';for(let r=0;r<6;r++){const row=document.createElement('div');row.className='row';for(let c=0;c<6;c++){const t=document.createElement('div');t.className='tile';const g=state.guesses[r];if(g&&g[c]){t.classList.add('revealed');t.textContent=g[c];t.classList.add(g.status[c]==='correct'?'correct':g.status[c]==='present'?'present':'absent');}else t.classList.add('empty');row.appendChild(t);}board.appendChild(row);}}
+function renderKeyboard(){const rows=['QWERTYUIOP','ASDFGHJKL','ÇZXCVBNM'];keyboard.innerHTML='';rows.forEach(rowStr=>{const row=document.createElement('div');row.style.display='flex';row.style.gap='5px';row.style.justifyContent='center';row.style.marginBottom='5px';[...rowStr].forEach(ch=>{const k=document.createElement('button');k.className='key';k.textContent=ch;k.onclick=()=>typeKey(ch);row.appendChild(k);});if(rowStr==='ASDFGHJKL'){const del=document.createElement('button');del.className='key wide';del.textContent='APAGAR';del.onclick=()=>{guessInput.value=guessInput.value.slice(0,-1);updateSubmit();};row.appendChild(del);}if(rowStr==='ÇZXCVBNM'){const ent=document.createElement('button');ent.className='key wide';ent.textContent='ENTER';ent.onclick=submitGuess;row.appendChild(ent);}keyboard.appendChild(row);});}
+function typeKey(ch){if(state.finished||guessInput.value.length>=6)return;guessInput.value+=ch;updateSubmit();}
+function updateSubmit(){btnSubmit.disabled=guessInput.value.length!==6||state.finished;}
+function submitGuess(){if(state.finished)return;const g=guessInput.value.toUpperCase();if(g.length!==6){showAlert('Digite 6 letras');return;}const letras=g.split('');const status=[];const target=state.palavra.split('');const used=Array(6).fill(false);for(let i=0;i<6;i++){if(letras[i]===target[i]){status[i]='correct';used[i]=true;}}for(let i=0;i<6;i++){if(status[i])continue;const idx=target.findIndex((ch,j)=>!used[j]&&ch===letras[i]);if(idx>=0){status[i]='present';used[idx]=true;}else status[i]='absent';}state.guesses.push({letters:letras,status});state.turn++;const won=g===state.palavra;if(won||state.turn>=6){state.finished=true;state.won=won;updateStats(won);}localStorage.setItem('palavraJogo',JSON.stringify(state));renderBoard();renderKeyboard();guessInput.value='';updateSubmit();if(state.finished)setTimeout(renderResult,700);}
+function showAlert(m){alertEl.textContent=m;alertEl.style.display='block';setTimeout(()=>alertEl.style.display='none',2200);}
+function updateStats(won){stats.total++;if(won){stats.wins++;stats.streak++;if(stats.streak>stats.bestStreak)stats.bestStreak=stats.streak;stats.lastWord=state.palavra;}else stats.streak=0;localStorage.setItem('palavraStats',JSON.stringify(stats));}
+function backHome(){renderHome();}
+function showModal(){$('modalOverlay').style.display='flex';}
+function closeModal(){$('modalOverlay').style.display='none';renderHome();}
+function copyResult(){const txt=`Acabei de jogar hoje e usei ${state.turn} tentativa${state.turn>1?'s':''}! #PalavraDoDia`;navigator.clipboard.writeText(txt).then(()=>{const t=$('toast');t.style.display='block';setTimeout(()=>t.style.display='none',1800);});}
+function startGame(){renderGame();}
+guessInput.addEventListener('input',()=>{guessInput.value=guessInput.value.toUpperCase().replace(/[^A-ZÇÀ-Ú]/g,'').slice(0,6);updateSubmit();});
+window.addEventListener('keydown',e=>{if(document.activeElement!==guessInput&&/^[a-zçà-ú]$/i.test(e.key)){typeKey(e.key.toUpperCase());}if(e.key==='Backspace'){guessInput.value=guessInput.value.slice(0,-1);updateSubmit();}if(e.key==='Enter')submitGuess();});
+renderHome();
+</script>
+</body>
+</html>

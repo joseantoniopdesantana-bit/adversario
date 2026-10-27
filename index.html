@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Jogo casual diário de adivinhação de palavras - adivinhe a palavra secreta em 6 tentativas">
+<title>Palavra do Dia — Jogo Casual de Adivinhação</title>
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/accessibility.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">🧩 Palavra do Dia</div>
+  <div class="badge">Hoje: <span id="catBadge">—</span></div>
+</header>
+
+<!-- TELA INICIAL -->
+<div class="screen active" id="screen-home">
+  <div class="card" style="max-width:340px;">
+    <div class="category-pill" id="homeCat">Tema: <span id="homeCatName">—</span></div>
+    <h1 id="gameTitle">Palavra do Dia</h1>
+    <p class="sub" id="gameSubtitle">Adivinhe a palavra de 6 letras em até 6 tentativas.</p>
+    <div class="rules">
+      <b>Verde:</b> letra certa no lugar certo. <b>Amarelo:</b> letra certa, lugar errado. <b>Cinza:</b> não existe na palavra.
+    </div>
+    <button class="btn-primary" id="btnStart">Iniciar partida</button>
+  </div>
+  <div class="footer-note">Sem cadastro · Grátis · Mobile-first</div>
+</div>
+
+<!-- TELA DE PARTIDA -->
+<div class="screen" id="screen-game">
+  <div class="card">
+    <div class="category-pill" id="gameCat">Tema: <span id="gameCatName">—</span></div>
+    <div class="turn-counter" id="turnNum">Tentativa 1 de 6</div>
+    <div class="grid" id="board" aria-label="Tabuleiro de tentativas"></div>
+    <div id="alert" role="alert" aria-live="polite"></div>
+    <div class="instructions" style="font-size:12px;color:var(--text-muted);margin-top:4px;text-align:center;line-height:1.4;">
+      Clique em um quadrado e digite, ou use o teclado físico.<br>Pressione ENTER para enviar.
+    </div>
+    <div class="keyboard" id="keyboard" aria-label="Teclado virtual"></div>
+    <button class="btn-ghost" id="btnBackHome" style="margin-top:10px;width:100%;">Voltar ao início</button>
+  </div>
+</div>
+
+<!-- TELA DE RESULTADO -->
+<div class="screen" id="screen-result">
+  <div class="card" style="max-width:340px;">
+    <div class="result">
+      <h2 id="resultTitle">Parabéns!</h2>
+      <p id="resultMsg">Você acertou em 3 tentativas!</p>
+      <div class="word-reveal" id="wordReveal">PALAVRA: BANANA</div>
+      <div class="stats">
+        <div class="stat"><div class="val" id="statStreak">0</div><div class="lbl">streak</div></div>
+        <div class="stat"><div class="val" id="statBest">0</div><div class="lbl">melhor streak</div></div>
+        <div class="stat"><div class="val" id="statWin">0</div><div class="lbl">vitórias</div></div>
+        <div class="stat"><div class="val" id="statTotal">0</div><div class="lbl">partidas</div></div>
+        <div class="stat"><div class="val" id="statAccuracy">0%</div><div class="lbl">acerto</div></div>
+        <div class="stat"><div class="val" id="statLastWord">—</div><div class="lbl">última palavra</div></div>
+      </div>
+      <div class="share-row">
+        <button class="btn-copy" id="btnCopy">Copiar resultado</button>
+      </div>
+      <button class="btn-primary" id="btnPlayAgain" style="margin-top:12px;">Jogar amanhã</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">Copiado!</div>
+
+<!-- Modal: já jogou hoje -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Já jogou hoje">
+    <h3 id="modalTitle">Aguarde o próximo dia</h3>
+    <p id="modalBody">Você já completou o desafio de hoje. Volte amanhã!</p>
+    <div class="actions">
+      <button class="btn-ghost" id="btnModalStats">Ver estatísticas</button>
+      <button class="btn-primary" id="btnModalClose">Voltar ao início</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+/* ============================================================
+   WordPlay — Estilo Escuro Moderno (Protótipo 3)
+   ============================================================ */
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --surface: #334155;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --accent: #38bdf8;
+  --accent2: #818cf8;
+  --correct: #4ade80;
+  --correct-dark: #022c22;
+  --present: #facc15;
+  --present-dark: #3d2e04;
+  --absent: #64748b;
+  --radius: 14px;
+  --shadow: 0 20px 25px -5px rgba(0,0,0,0.3), 0 10px 10px -5px rgba(0,0,0,0.2);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+.app {
+  width: 100%;
+  max-width: 420px;
+  background: var(--panel);
+  padding: 32px 28px;
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.logo .mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 0.9rem;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 26px;
+}
+
+.stat {
+  flex: 1;
+  background: var(--surface);
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stat .label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.stat .value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.stat .value.primary {
+  color: var(--accent);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.cell {
+  width: 62px;
+  height: 62px;
+  border: 1px solid var(--surface);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
+  background: transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cell.filled {
+  border-color: var(--surface);
+  color: var(--text);
+}
+
+.turn {
+  animation: turn 0.5s ease forwards;
+}
+
+@keyframes turn {
+  0% { transform: rotateY(0); }
+  50% { transform: rotateY(90deg); }
+  100% { transform: rotateY(0); }
+}
+
+.correct {
+  background: var(--correct);
+  border-color: var(--correct);
+  color: var(--correct-dark);
+}
+
+.present {
+  background: var(--present);
+  border-color: var(--present);
+  color: var(--present-dark);
+}
+
+.absent {
+  background: var(--absent);
+  border-color: var(--absent);
+  color: var(--text);
+}
+
+.msg {
+  margin-bottom: 20px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.msg.error {
+  color: var(--absent);
+}
+
+.msg.success {
+  color: var(--correct);
+}
+
+.keyboard {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.key-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.key {
+  flex: 1;
+  height: 50px;
+  border: none;
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.15s;
+}
+
+.key:active {
+  transform: scale(0.97);
+  background: #475569;
+}
+
+.key.wide {
+  flex: 1.7;
+}
+
+.key.correct {
+  background: var(--correct);
+  color: var(--correct-dark);
+  border-color: var(--correct);
+}
+
+.key.present {
+  background: var(--present);
+  color: var(--present-dark);
+  border-color: var(--present);
+}
+
+.key.absent {
+  background: var(--absent);
+  color: var(--text);
+  border-color: var(--absent);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35);
+}
+
+.btn.primary:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+.btn.ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.btn.ghost:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.footer {
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.footer span {
+  color: var(--accent);
+}
+
+/* ============================================================
+   Responsividade
+   ============================================================ */
+@media (max-width: 440px) {
+  .cell {
+    width: 54px;
+    height: 54px;
+    font-size: 1.4rem;
+  }
+  .key {
+    height: 44px;
+    font-size: 0.85rem;
+  }
+  .app {
+    padding: 24px 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cell {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+  .board {
+    gap: 6px;
+  }
+  .key-row {
+    gap: 4px;
+    margin-bottom: 6px;
+  }
+}
+
+/* Correção do teclado virtual */
+#keyboard,
+.keyboard {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  gap: 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#keyboard .key-row,
+.keyboard .key-row {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  gap: 4px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+#keyboard .key,
+.keyboard .key {
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+  height: 42px;
+  padding: 0 2px;
+  font-size: clamp(10px, 2.5vw, 14px);
+  box-sizing: border-box;
+}
+
+#keyboard .key.wide,
+.keyboard .key.wide {
+  flex: 1.5 1 0;
+}
+
+@media (max-width: 480px) {
+  #keyboard .key-row,
+  .keyboard .key-row {
+    gap: 3px;
+  }
+
+  #keyboard .key,
+  .keyboard .key {
+    height: 38px;
+    font-size: 11px;
+  }
+}
+
